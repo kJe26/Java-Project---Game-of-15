@@ -22,7 +22,7 @@ public class GameFrame extends JFrame implements ActionListener {
         /** initializing the menubar **/
         menuBar = new JPanel();
         menuBar.setBounds(0, 0, getWidth(), MARGIN / 2);
-        menuBar.setBackground(new Color(127, 0, 255));
+        menuBar.setBackground(new Color(52, 88, 48));
         this.add(menuBar);
 
         /** initializing the restart button **/
@@ -32,11 +32,12 @@ public class GameFrame extends JFrame implements ActionListener {
         attributes.put(TextAttribute.TRACKING, 0.12);
         restartButton.setFont(new Font("ComicSans", Font.BOLD, 18));
         restartButton.setFont(restartButton.getFont().deriveFont(attributes));          //set the text attributes
-        restartButton.setForeground(Color.WHITE);
+        restartButton.setForeground(new Color(148, 236, 190));
         restartButton.setBackground(null);
         menuBar.add(restartButton);
         menuBar.setLayout(null);
-        restartButton.setBounds(0, 0, menuBar.getWidth() / 4, menuBar.getHeight());     //align the button
+        restartButton.setBounds(MARGIN / 2, 0, menuBar.getWidth() / 4, menuBar.getHeight());     //align the button
+        restartButton.setHorizontalAlignment(SwingConstants.LEFT);
         restartButton.setFocusable(false);
         restartButton.setContentAreaFilled(false);
         restartButton.addActionListener(this);
@@ -46,10 +47,11 @@ public class GameFrame extends JFrame implements ActionListener {
         exitButton.setBorder(BorderFactory.createEmptyBorder());
         exitButton.setFont(new Font("ComicSans", Font.BOLD, 18));
         exitButton.setFont(exitButton.getFont().deriveFont(attributes));
-        exitButton.setForeground(Color.WHITE);
+        exitButton.setForeground(new Color(148, 236, 190));
         exitButton.setBackground(null);
         menuBar.add(exitButton);
-        exitButton.setBounds(menuBar.getWidth() * 3 / 4, 0, menuBar.getWidth() / 4, menuBar.getHeight());
+        exitButton.setBounds(menuBar.getWidth() - (MARGIN / 2) - (menuBar.getWidth() / 4), 0, menuBar.getWidth() / 4, menuBar.getHeight());
+        exitButton.setHorizontalAlignment(SwingConstants.RIGHT);
         exitButton.setFocusable(false);
         exitButton.setContentAreaFilled(false);
 

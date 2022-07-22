@@ -11,8 +11,8 @@ public class TiliToli extends JPanel {
     private int panelSize;     //size of the panel
     private int noTiles;       //number of tiles
     private int dimension;     //dimension of the grid UI
-    private static final Color TILE_COLOR = new Color(127, 0, 255);             //tiles color
-    private static final Color BACKGROUND_COLOR = new Color(153, 0, 76);        //BG color
+    private static final Color TILE_COLOR = new Color(52, 88, 48);             //tiles color
+    private static final Color BACKGROUND_COLOR = new Color(30, 63, 32);        //BG color
     private static final Random rnd = new Random();     //random that shuffles the tiles
     private int[] tiles;       //tiles stored in a 1D array
     private int tileSize;      //size of tiles on the UI
@@ -193,7 +193,7 @@ public class TiliToli extends JPanel {
             g.fillRoundRect(x, y, tileSize, tileSize, 10, 10);
             g.setColor(Color.BLACK);
             g.drawRoundRect(x, y, tileSize, tileSize, 10, 10);
-            g.setColor(Color.WHITE);
+            g.setColor(new Color(148, 236, 190));
 
             drawCenteredString(g, String.valueOf(tiles[i]), x, y);
         }
