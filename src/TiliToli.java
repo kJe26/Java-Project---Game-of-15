@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class TiliToli extends JPanel {
@@ -17,6 +20,9 @@ public class TiliToli extends JPanel {
     private int margin;             //margin for grid on the frame
     private int gridSize;           //sizeof grid UI
     private boolean gameOver;       //true - game over, false - otherwise
+    private int scoreCounter;       //counts how many click were made until game completed
+    private JLabel score;           //score will be displayed on this
+
     public TiliToli(int panelSize, int dimension, int margin){
         this.panelSize = panelSize;
         this.dimension = dimension;
@@ -26,6 +32,22 @@ public class TiliToli extends JPanel {
         this.tiles = new int[panelSize * panelSize];
         this.gridSize = (dimension - 2 * margin);
         this.tileSize = gridSize / panelSize;
+
+        this.scoreCounter = 0;
+
+
+        /** score counter display **/
+        /*
+        score = new JLabel();
+        score.setBounds(dimension / 2, 0, dimension / 4, dimension / 2);
+        score.setText("Your score: " + String.valueOf((scoreCounter)));
+        score.setBackground(null);
+        Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>();
+        attributes.put(TextAttribute.TRACKING, 0.12);
+        score.setFont(new Font("ComicSans", Font.BOLD, 18));
+        score.setFont(score.getFont().deriveFont(attributes));
+        score.setForeground(Color.WHITE);
+        GameFrame.menuBar.add(score);*/
 
         setPreferredSize(new Dimension(dimension, dimension));
         setBackground(BACKGROUND_COLOR);
@@ -77,6 +99,10 @@ public class TiliToli extends JPanel {
                         } while (blankPos != clickPos);
 
                         tiles[blankPos] = 0;
+
+                        /*
+                        scoreCounter++;
+                        score.setText("Your score: " + String.valueOf((scoreCounter)));*/
                     }
 
                     /** check if solved **/
@@ -85,8 +111,6 @@ public class TiliToli extends JPanel {
 
                 /** repaint the panel **/
                 repaint();
-
-
             }
         });
 
