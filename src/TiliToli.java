@@ -16,7 +16,7 @@ public class TiliToli extends JPanel {
     private int margin;             //margin for grid on the frame
     private int gridSize;           //sizeof grid UI
     private boolean gameOver;       //true - game over, false - otherwise
-    private final Color TEXTCOLOR = new Color(148, 236, 190);
+    private final Color TEXT_COLOR = new Color(148, 236, 190);
 
     public TiliToli(int panelSize, int dimension, int margin){
         this.panelSize = panelSize;
@@ -169,9 +169,9 @@ public class TiliToli extends JPanel {
             /** for the other tiles **/
             g.setColor(getForeground());
             g.fillRoundRect(x, y, tileSize, tileSize, 10, 10);
-            g.setColor(TEXTCOLOR);
+            g.setColor(TEXT_COLOR);
             g.drawRoundRect(x, y, tileSize, tileSize, 10, 10);
-            g.setColor(TEXTCOLOR);
+            g.setColor(TEXT_COLOR);
 
             drawCenteredString(g, String.valueOf(tiles[i]), x, y);
         }
