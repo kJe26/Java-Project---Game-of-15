@@ -2,15 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class TiliToli extends JPanel {
     private int panelSize;     //size of the panel
     private int noTiles;       //number of tiles
-    private int dimension;     //dimension of the grid UI
     private static final Color TILE_COLOR = new Color(52, 88, 48);             //tiles color
     private static final Color BACKGROUND_COLOR = new Color(30, 63, 32);        //BG color
     private static final Random rnd = new Random();     //random that shuffles the tiles
@@ -20,36 +16,19 @@ public class TiliToli extends JPanel {
     private int margin;             //margin for grid on the frame
     private int gridSize;           //sizeof grid UI
     private boolean gameOver;       //true - game over, false - otherwise
-    private int scoreCounter;       //counts how many click were made until game completed
-    private JLabel score;           //score will be displayed on this
+    private final Color TEXTCOLOR = new Color(148, 236, 190);
 
     public TiliToli(int panelSize, int dimension, int margin){
         this.panelSize = panelSize;
-        this.dimension = dimension;
         this.margin = margin;
-
         this.noTiles = panelSize * panelSize - 1;
         this.tiles = new int[panelSize * panelSize];
         this.gridSize = (dimension - 2 * margin);
         this.tileSize = gridSize / panelSize;
 
-        this.scoreCounter = 0;
+        GameFrame.scoreCounter = 0;
 
-
-        /** score counter display **/
-        /*
-        score = new JLabel();
-        score.setBounds(dimension / 2, 0, dimension / 4, dimension / 2);
-        score.setText("Your score: " + String.valueOf((scoreCounter)));
-        score.setBackground(null);
-        Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>();
-        attributes.put(TextAttribute.TRACKING, 0.12);
-        score.setFont(new Font("ComicSans", Font.BOLD, 18));
-        score.setFont(score.getFont().deriveFont(attributes));
-        score.setForeground(Color.WHITE);
-        GameFrame.menuBar.add(score);*/
-
-        setPreferredSize(new Dimension(dimension, dimension));
+        setPreferredSize(new Dimension(dimension, dimension));          //dimension of grid UI
         setBackground(BACKGROUND_COLOR);
         setForeground(TILE_COLOR);
         setFont(new Font("ComicSans", Font.BOLD, 60));
@@ -100,9 +79,8 @@ public class TiliToli extends JPanel {
 
                         tiles[blankPos] = 0;
 
-                        /*
-                        scoreCounter++;
-                        score.setText("Your score: " + String.valueOf((scoreCounter)));*/
+                        GameFrame.scoreCounter++;
+                        GameFrame.score.setText("Your score: " + GameFrame.scoreCounter);
                     }
 
                     /** check if solved **/
@@ -191,9 +169,9 @@ public class TiliToli extends JPanel {
             /** for the other tiles **/
             g.setColor(getForeground());
             g.fillRoundRect(x, y, tileSize, tileSize, 10, 10);
-            g.setColor(Color.BLACK);
+            g.setColor(TEXTCOLOR);
             g.drawRoundRect(x, y, tileSize, tileSize, 10, 10);
-            g.setColor(new Color(148, 236, 190));
+            g.setColor(TEXTCOLOR);
 
             drawCenteredString(g, String.valueOf(tiles[i]), x, y);
         }
