@@ -3,10 +3,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.font.TextAttribute;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
-public class MainMenu extends JFrame {
+public class MainMenu extends JFrame implements ActionListener {
     private JLabel imageLabel;              //label for the image
     private JPanel controlPanel;            //control panel for the buttons
     private JButton startButton;            //start button
@@ -16,6 +23,8 @@ public class MainMenu extends JFrame {
     private final Color BACKGROUND_COLOR = new Color(30, 63, 32);
     private final Color BUTTONS_COLOR = new Color(52, 88, 48);
     private final Color TEXT_COLOR = new Color(148, 236, 190);
+    private JButton backButton;
+    private JPanel contentPanel;
 
     public MainMenu() {
         this.setSize(600, 800);
@@ -96,7 +105,70 @@ public class MainMenu extends JFrame {
             }
         });
 
+        helpButton.addActionListener(this);
+
         exitButton.addActionListener(e -> System.exit(0));
+
+        /** content panel **/
+        contentPanel = new JPanel();
+        contentPanel.setBounds(0,0, getWidth(), getHeight());
+        contentPanel.setBackground(BACKGROUND_COLOR);
+        contentPanel.setLayout(null);
+
+        /** back button **/
+        backButton = new JButton("Back");
+        backButton.setBounds(10, 10, 100, 30);
+        backButton.setBackground(BUTTONS_COLOR);
+        backButton.setFont(new Font("ComicSans", Font.BOLD, 16));
+        backButton.setForeground(Color.white);
+        backButton.setFocusable(false);
+        backButton.setBorder(BorderFactory.createEmptyBorder());
+        backButton.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == helpButton) {
+            remove(imageLabel);
+            remove(controlPanel);
+
+            add(contentPanel);
+            contentPanel.add(backButton);
+
+            /** help text panel **/
+            JLabel helpPanel = new JLabel("", JLabel.CENTER);
+            helpPanel.setBounds(10, backButton.getHeight() + 10, getWidth() - 20, getHeight() - 10 - backButton.getHeight());
+            helpPanel.setBackground(null);
+            helpPanel.setOpaque(true);
+
+            File textFile = new File("helpText.txt");
+            Scanner textScanner;
+            try {
+                textScanner = new Scanner(textFile);
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+            String fileContent = "";
+            while(textScanner.hasNextLine()) {
+                fileContent = fileContent.concat(textScanner.nextLine() + "\n");
+            }
+
+            helpPanel.setText("<html><div style='text-align: center;'>" + fileContent.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</div></html>");
+            helpPanel.setForeground(Color.white);
+            helpPanel.setFont(new Font("ComicSans", Font.BOLD, 17));
+            helpPanel.setAlignmentX(0);
+            helpPanel.setAlignmentY(0);
+            contentPanel.add(helpPanel);
+
+            SwingUtilities.updateComponentTreeUI(this);
+        } else {
+            if(e.getSource() == backButton) {
+                remove(contentPanel);
+                add(imageLabel);
+                add(controlPanel);
+                SwingUtilities.updateComponentTreeUI(this);
+            }
+        }
     }
 
     public static void main(String[] args) {
