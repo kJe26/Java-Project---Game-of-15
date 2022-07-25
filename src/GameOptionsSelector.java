@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.font.TextAttribute;
-
 public class GameOptionsSelector extends JFrame {
     private JPanel optionPanel;
     private JLabel difficultyLabel;
@@ -25,7 +23,8 @@ public class GameOptionsSelector extends JFrame {
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        int MARGIN = 30;
+        final int MARGIN = 30;
+        final float SIZE = 36;
 
         /** option panel **/
         optionPanel = new JPanel();
@@ -50,11 +49,10 @@ public class GameOptionsSelector extends JFrame {
         submitButton.setForeground(TEXT_COLOR);
         submitButton.setFocusable(false);
         submitButton.setBorder(BorderFactory.createEmptyBorder());
-        submitButton.setFont(difficultyLabel.getFont());
+        submitButton.setFont(difficultyLabel.getFont().deriveFont(SIZE));
         optionPanel.add(submitButton);
 
         /** difficulty radio buttons **/
-        final float SIZE = 36;
         easy = new JCustomRadioButton();
         easy.setText(" 3 x 3");
         easy.setBounds(difficultyLabel.getWidth() / 2 - 2 * MARGIN, difficultyLabel.getHeight() / 2, 4 * MARGIN, MARGIN);

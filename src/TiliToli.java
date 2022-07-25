@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 
 public class TiliToli extends JPanel {
@@ -40,6 +43,12 @@ public class TiliToli extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (gameOver) {
+                    try {
+                        saveScore(GameFrame.scoreCounter);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    JOptionPane.showMessageDialog(null, "Congrats");
                     newGame();
                 } else {
                     /** get the position of the clicked tile **/
@@ -101,6 +110,8 @@ public class TiliToli extends JPanel {
             shuffleTiles();
         } while(!isSolvable());
         gameOver = false;
+        GameFrame.scoreCounter = 0;
+        GameFrame.score.setText("Your score: " + GameFrame.scoreCounter);
     }
 
     private void resetGame() {
@@ -159,8 +170,7 @@ public class TiliToli extends JPanel {
             /** checking if it's the blank tile **/
             if (tiles[i] == 0) {
                 if (gameOver) {
-                    g.setColor(TILE_COLOR);
-                    drawCenteredString(g, "✓", x, y);
+                    break;
                 }
 
                 continue;
@@ -177,15 +187,6 @@ public class TiliToli extends JPanel {
         }
     }
 
-    private void drawStartMessage(Graphics2D g) {
-        if (gameOver) {
-            g.setFont(getFont().deriveFont(Font.BOLD, 18));
-            g.setColor(TILE_COLOR);
-            String s = "Click to start a new game";
-            g.drawString(s, (getWidth() - g.getFontMetrics().stringWidth(s)) / 2, getHeight() - margin);
-        }
-    }
-
     private void drawCenteredString(Graphics2D g, String s, int x, int y) {
         /** draw the string to the center of the tile **/
         FontMetrics fontMetrics = g.getFontMetrics();
@@ -194,13 +195,18 @@ public class TiliToli extends JPanel {
         g.drawString(s, x + (tileSize - fontMetrics.stringWidth(s)) / 2, y + (asc + (tileSize - (asc + desc)) / 2));
     }
 
+    private void saveScore(int score) throws IOException {
+        FileWriter fw = new FileWriter("score.dat", true);
+        fw.write(score);
+        fw.close();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D graphics2D = (Graphics2D) g;
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         drawGrid(graphics2D);
-        drawStartMessage(graphics2D);
     }
 }
 

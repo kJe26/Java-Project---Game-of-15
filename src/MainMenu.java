@@ -7,8 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -103,6 +101,20 @@ public class MainMenu extends JFrame implements ActionListener {
                 dispose();
                 GameOptionsSelector optionsSelector = new GameOptionsSelector();
                 optionsSelector.setVisible(true);
+            }
+        });
+
+        scoreBoardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                ScoreBoard scoreBoard = null;
+                try {
+                    scoreBoard = new ScoreBoard();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+                scoreBoard.setVisible(true);
             }
         });
 
