@@ -10,7 +10,7 @@ public class GameOptionsSelector extends JFrame {
     private ButtonGroup difficultyButtons;
     private JRadioButton easy;
     private JRadioButton medium;
-    private JRadioButton hard;
+    private JCustomRadioButton hard;
     private JButton submitButton;
     private final Color BACKGROUND_COLOR = new Color(30, 63, 32);
     private final Color BUTTONS_COLOR = new Color(52, 88, 48);
@@ -55,22 +55,25 @@ public class GameOptionsSelector extends JFrame {
 
         /** difficulty radio buttons **/
         final float SIZE = 36;
-        easy = new JRadioButton("3 x 3");
+        easy = new JCustomRadioButton();
+        easy.setText(" 3 x 3");
         easy.setBounds(difficultyLabel.getWidth() / 2 - 2 * MARGIN, difficultyLabel.getHeight() / 2, 4 * MARGIN, MARGIN);
         easy.setBackground(BACKGROUND_COLOR);
         easy.setForeground(TEXT_COLOR);
         easy.setFocusable(false);
         easy.setFont(submitButton.getFont().deriveFont(SIZE));
-        easy.setVerticalTextPosition(SwingConstants.CENTER);
+        easy.setSelected(true);
 
-        medium = new JRadioButton("4 x 4");
+        medium = new JCustomRadioButton();
+        medium.setText(" 4 x 4");
         medium.setBounds(difficultyLabel.getWidth() / 2 - 2 * MARGIN, easy.getY() + easy.getHeight() + MARGIN, 4 * MARGIN, MARGIN);
         medium.setBackground(BACKGROUND_COLOR);
         medium.setForeground(TEXT_COLOR);
         medium.setFocusable(false);
         medium.setFont(submitButton.getFont().deriveFont(SIZE));
 
-        hard = new JRadioButton("5 x 5");
+        hard = new JCustomRadioButton();
+        hard.setText(" 5 x 5");
         hard.setBounds(difficultyLabel.getWidth() / 2 - 2 * MARGIN, medium.getY() + medium.getHeight() + MARGIN, 4 * MARGIN, MARGIN);
         hard.setBackground(BACKGROUND_COLOR);
         hard.setForeground(TEXT_COLOR);

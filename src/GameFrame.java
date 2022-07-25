@@ -29,7 +29,7 @@ public class GameFrame extends JFrame implements ActionListener {
 
         /** initializing the menubar **/
         menuBar = new JPanel();
-        menuBar.setBounds(0, 0, getWidth(), MARGIN / 2);
+        menuBar.setBounds(0, 0, getWidth(), MARGIN * 3 / 4);
         menuBar.setBackground(new Color(52, 88, 48));
         menuBar.setLayout(null);
         this.add(menuBar);
@@ -39,7 +39,7 @@ public class GameFrame extends JFrame implements ActionListener {
         restartButton.setBorder(BorderFactory.createEmptyBorder());         //remove border
         Map<TextAttribute, Object> attributes = new HashMap<>();
         attributes.put(TextAttribute.TRACKING, 0.12);
-        restartButton.setFont(new Font("ComicSans", Font.BOLD, 18));
+        restartButton.setFont(new Font("ComicSans", Font.BOLD, MARGIN * 2 / 5));
         restartButton.setFont(restartButton.getFont().deriveFont(attributes));          //set the text attributes
         restartButton.setForeground(TEXT_COLOR);
         restartButton.setBackground(null);
@@ -64,11 +64,12 @@ public class GameFrame extends JFrame implements ActionListener {
 
         /** score counter display **/
         score = new JLabel();
-        score.setBounds(menuBar.getWidth() / 2 - MARGIN, 0, getWidth() - (MARGIN / 2) - exitButton.getWidth(), menuBar.getHeight());
+        score.setBounds(menuBar.getWidth() / 4, 0, menuBar.getWidth() / 2, menuBar.getHeight());
         score.setText("Your score: " + scoreCounter);
         score.setBackground(null);
         score.setFont(restartButton.getFont().deriveFont(attributes));
         score.setForeground(new Color(231, 29, 54));
+        score.setHorizontalAlignment(SwingConstants.CENTER);
         menuBar.add(score);
 
         /** adding the game to the frame **/

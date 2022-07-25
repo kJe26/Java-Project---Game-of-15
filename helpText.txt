@@ -1,13 +1,14 @@
 Welcome to TiliToli!
-By pressing the "Start Game" button a new window will pop up, where you could choose what difficulty to play, what color and size the grid UI will have.
+
+By pressing the "Start Game" button a new window will pop up, where you could choose what difficulty to play.
 Once you've chosen from these options the game will start.
 The only objective is to move the tiles until you've got all the tiles arranged in an ascending order, with the blank tile being the last one (in the bottom right corner).
+
 On the top of the screen you'll have your menu bar, which contains:
-1. the "Restart" button: this one will reset your score, aswell as your tiles and you'll need to start from the beginning.
-2. the live score: each time a tile was moved the score will be increased
+1. the "Restart" button: this one will reset your score, aswell as your tiles and you'll need to start from the beginning
+2. the live score: each time a tile moves the score refreshes
 3. the "Finish" button: this one will exit from the game without saving your score.
-Each time you complete a game succesfully, the score will be saved on your local machine, and by pressing the "Scoreboard" button from the main menu you'll be able to take a look at your top 5 best scores.
-There's a "Help" button which I assume you found out what does :)
-You can exit the help window by pressing the "Back" button on the top left of the window.
-If you wish to close the application just press the "Exit" button.
-Thanks for playing, and have fun with trying to achieve the lowest score!
+
+Each time you complete a game succesfully, the score will be saved on your local machine, and pressing the "Scoreboard" button on the main menu you'll be able to take a look at your top 5 best scores
+
+Thanks for playing, and have fun!

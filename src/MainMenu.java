@@ -31,6 +31,7 @@ public class MainMenu extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         this.setLayout(null);
         this.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         int MARGIN = 60;
         /** adding the logo to the top of the start screen **/
@@ -120,7 +121,7 @@ public class MainMenu extends JFrame implements ActionListener {
         backButton.setBounds(10, 10, 100, 30);
         backButton.setBackground(BUTTONS_COLOR);
         backButton.setFont(new Font("ComicSans", Font.BOLD, 16));
-        backButton.setForeground(Color.white);
+        backButton.setForeground(TEXT_COLOR);
         backButton.setFocusable(false);
         backButton.setBorder(BorderFactory.createEmptyBorder());
         backButton.addActionListener(this);
@@ -155,7 +156,7 @@ public class MainMenu extends JFrame implements ActionListener {
             }
 
             helpPanel.setText("<html><div style='text-align: center;'>" + fileContent.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</div></html>");
-            helpPanel.setForeground(Color.white);
+            helpPanel.setForeground(TEXT_COLOR);
             helpPanel.setFont(new Font("ComicSans", Font.BOLD, 17));
             helpPanel.setAlignmentX(0);
             helpPanel.setAlignmentY(0);
