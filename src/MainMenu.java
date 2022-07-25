@@ -67,7 +67,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
         /** adding the scoreboard button to the panel **/
         scoreBoardButton = new JButton("Scoreboard");
-        scoreBoardButton.setBounds(MARGIN, startButton.getX() + MARGIN * 3 / 2, getWidth() - 2 * MARGIN, getWidth() / 10);
+        scoreBoardButton.setBounds(MARGIN, startButton.getY() + startButton.getHeight() + MARGIN / 2, getWidth() - 2 * MARGIN, getWidth() / 10);
         scoreBoardButton.setBackground(BUTTONS_COLOR);
         scoreBoardButton.setBorder(BorderFactory.createEmptyBorder());
         scoreBoardButton.setFocusable(false);
@@ -77,7 +77,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
         /** adding the help button to the panel **/
         helpButton = new JButton("Help");
-        helpButton.setBounds(MARGIN, 2 * (startButton.getHeight() + MARGIN), getWidth() - 2 * MARGIN, getWidth() / 10);
+        helpButton.setBounds(MARGIN, scoreBoardButton.getY() + scoreBoardButton.getHeight() + MARGIN / 2, getWidth() - 2 * MARGIN, getWidth() / 10);
         helpButton.setBackground(BUTTONS_COLOR);
         helpButton.setBorder(BorderFactory.createEmptyBorder());
         helpButton.setFocusable(false);
@@ -87,7 +87,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
         /** adding the exit button to the panel **/
         exitButton = new JButton("Exit");
-        exitButton.setBounds(MARGIN, 3 * startButton.getHeight() + 5 * MARGIN / 2, getWidth() - 2 * MARGIN, getWidth() / 10);
+        exitButton.setBounds(MARGIN, helpButton.getY() + helpButton.getHeight() + MARGIN / 2, getWidth() - 2 * MARGIN, getWidth() / 10);
         exitButton.setBackground(BUTTONS_COLOR);
         exitButton.setBorder(BorderFactory.createEmptyBorder());
         exitButton.setFocusable(false);
@@ -100,8 +100,8 @@ public class MainMenu extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                GameFrame newGame = new GameFrame();
-                newGame.setVisible(true);
+                GameOptionsSelector optionsSelector = new GameOptionsSelector();
+                optionsSelector.setVisible(true);
             }
         });
 
@@ -138,6 +138,7 @@ public class MainMenu extends JFrame implements ActionListener {
             /** help text panel **/
             JLabel helpPanel = new JLabel("", JLabel.CENTER);
             helpPanel.setBounds(10, backButton.getHeight() + 10, getWidth() - 20, getHeight() - 10 - backButton.getHeight());
+            helpPanel.setBorder(BorderFactory.createEmptyBorder(-backButton.getHeight(), 0, 0, 0));
             helpPanel.setBackground(null);
             helpPanel.setOpaque(true);
 

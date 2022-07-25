@@ -11,13 +11,19 @@ public class GameFrame extends JFrame implements ActionListener {
     private final JButton restartButton;      //restart button
     private final JButton exitButton;         //exit button
     private TiliToli game;                //the game itself
-    private final int DIMENSION = 600;    //dimension of the game panel - constant
-    private final int MARGIN = DIMENSION / 10;        //margin constant
+    private int DIFFICULTY;
+    private int DIMENSION;    //dimension of the game panel
+    private int MARGIN;        //margin constant
     protected static JLabel score;           //score will be displayed on this
     protected static int scoreCounter;       //counts how many click were made until game completed
     private final Color TEXT_COLOR = new Color(148, 236, 190);
 
-    public GameFrame() {
+    public GameFrame(int difficulty, int dimension) {
+        this.DIFFICULTY = difficulty;
+        this.DIMENSION = dimension;
+        this.MARGIN = DIMENSION / 10;
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         setLayout(null);
         setSize(DIMENSION, DIMENSION + MARGIN);
 
@@ -68,7 +74,7 @@ public class GameFrame extends JFrame implements ActionListener {
         /** adding the game to the frame **/
         setTitle("Tili Toli");
         setResizable(false);
-        game = new TiliToli(4, DIMENSION, MARGIN);
+        game = new TiliToli(DIFFICULTY, DIMENSION, MARGIN);
         game.setBounds(0, menuBar.getHeight(), getWidth(), getHeight());
         game.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, TEXT_COLOR));
         add(game, BorderLayout.CENTER);
@@ -89,7 +95,7 @@ public class GameFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e){
         if(e.getSource()==restartButton) {
             this.remove(game);
-            game = new TiliToli(4, DIMENSION, MARGIN);
+            game = new TiliToli(DIFFICULTY, DIMENSION, MARGIN);
             game.setBounds(0, menuBar.getHeight(), getWidth(), getHeight());
             game.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, TEXT_COLOR));
             add(game, BorderLayout.CENTER);
