@@ -60,22 +60,19 @@ public class ScoreBoard extends JFrame implements ActionListener {
             scorePanel.add(places[i]);
         }
 
-        Scanner fs = new Scanner(new File("score.dat"));
-        String score = "";
-        int i = 0;
-        while(fs.hasNextLine() && i < 5) {
-            score = fs.nextLine();
-            String tmp = places[i].getText();
-            if(String.valueOf(score) != "")
+        if(new File("score.txt").exists()) {
+            Scanner fs = new Scanner(new File("score.txt"));
+            String score = "";
+            int i = 0;
+            while (fs.hasNextLine()) {
+                score = fs.nextLine();
+                String tmp = places[i].getText();
                 tmp = tmp.concat(score);
-            places[i].setText(tmp);
-            ++i;
+                places[i].setText(tmp);
+                ++i;
+            }
+            fs.close();
         }
-        fs.close();
-
-
-
-
     }
 
     @Override

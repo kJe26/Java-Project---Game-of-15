@@ -3,9 +3,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
+import java.util.Scanner;
 
 public class TiliToli extends JPanel {
     private int panelSize;     //size of the panel
@@ -196,10 +198,47 @@ public class TiliToli extends JPanel {
     }
 
     private void saveScore(int score) throws IOException {
-        FileWriter fw = new FileWriter("score.dat", true);
-        fw.write(score);
+        int[] array = new int[5];
+        if(new File("score.txt").exists()) {
+            readIntoArray(new File("score.txt"), array);
+            insertScore(array, score);
+        } else {
+            array[0] = score;
+        }
+
+        FileWriter fw = new FileWriter("score.txt");
+        for(int i = 0; i < array.length; ++i) {
+            fw.write(String.valueOf(array[i]) + "\n");
+        }
         fw.close();
     }
+
+    private void readIntoArray(File f, int[] array) throws FileNotFoundException {
+        Scanner fs = new Scanner(f);
+        int i = 0;
+        while(fs.hasNextLine() && i < array.length) {
+            array[i] = Integer.valueOf(fs.nextLine());
+            ++i;
+        }
+        fs.close();
+    }
+
+    private void insertScore(int[] array, int score) {
+        for (int i = 0; i < array.length; ++i) {
+            if(array[i] == 0) {
+                array[i] = score;
+                return;
+            }
+            if(array[i] > score) {
+                for (int j = array.length - 2; j >= i; --j) {
+                    array[j + 1] = array[j];
+                }
+                array[i] = score;
+                return;
+            }
+        }
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {
