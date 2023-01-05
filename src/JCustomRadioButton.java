@@ -5,8 +5,15 @@ public class JCustomRadioButton extends JRadioButton {
     public final Color CIRCLE_COLOR = new Color(52, 88, 48);
     public final Color CHECKED_COLOR = new Color(148, 236, 190);
     public JCustomRadioButton() {
+        final Color BACKGROUND_COLOR = new Color(30, 63, 32);
+        final Color TEXT_COLOR = new Color(148, 236, 190);
+
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         setBackground(null);
+        this.setBackground(BACKGROUND_COLOR);
+        this.setForeground(TEXT_COLOR);
+        this.setFocusable(false);
+        this.setFont(new Font("ComicSans", Font.BOLD, 36));
     }
 
     @Override

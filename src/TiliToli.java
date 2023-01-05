@@ -10,28 +10,30 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class TiliToli extends JPanel {
-    private int panelSize;     //size of the panel
-    private int noTiles;       //number of tiles
+    private final int panelSize;     //size of the panel
+    private final int noTiles;       //number of tiles
     private static final Color TILE_COLOR = new Color(52, 88, 48);             //tiles color
     private static final Color BACKGROUND_COLOR = new Color(30, 63, 32);        //BG color
     private static final Random rnd = new Random();     //random that shuffles the tiles
-    private int[] tiles;       //tiles stored in a 1D array
-    private int tileSize;      //size of tiles on the UI
+    private final int[] tiles;       //tiles stored in a 1D array
+    private final int tileSize;      //size of tiles on the UI
     private int blankPos;      //position of blank tile
-    private int margin;             //margin for grid on the frame
-    private int gridSize;           //sizeof grid UI
+    private final int margin;             //margin for grid on the frame
+    private final int gridSize;           //sizeof grid UI
     private boolean gameOver;       //true - game over, false - otherwise
     private final Color TEXT_COLOR = new Color(148, 236, 190);
+    private final GameFrame gameFrame;
 
-    public TiliToli(int panelSize, int dimension, int margin){
+    public TiliToli(int panelSize, int dimension, int margin, GameFrame gameFrame){
         this.panelSize = panelSize;
         this.margin = margin;
         this.noTiles = panelSize * panelSize - 1;
         this.tiles = new int[panelSize * panelSize];
         this.gridSize = (dimension - 2 * margin);
         this.tileSize = gridSize / panelSize;
+        this.gameFrame = gameFrame;
 
-        GameFrame.scoreCounter = 0;
+        gameFrame.setScoreCounter(0);
 
         setPreferredSize(new Dimension(dimension, dimension));          //dimension of grid UI
         setBackground(BACKGROUND_COLOR);
@@ -46,11 +48,11 @@ public class TiliToli extends JPanel {
             public void mousePressed(MouseEvent e) {
                 if (gameOver) {
                     try {
-                        saveScore(GameFrame.scoreCounter);
+                        saveScore(gameFrame.getScoreCounter());
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
-                    JOptionPane.showMessageDialog(null, "Congrats");
+                    JOptionPane.showMessageDialog(null, "Congratulations, you've completed the game");
                     newGame();
                 } else {
                     /** get the position of the clicked tile **/
@@ -90,8 +92,8 @@ public class TiliToli extends JPanel {
 
                         tiles[blankPos] = 0;
 
-                        GameFrame.scoreCounter++;
-                        GameFrame.score.setText("Your score: " + GameFrame.scoreCounter);
+                        gameFrame.setScoreCounter(gameFrame.getScoreCounter() + 1);
+                        gameFrame.setScore();
                     }
 
                     /** check if solved **/
@@ -112,8 +114,8 @@ public class TiliToli extends JPanel {
             shuffleTiles();
         } while(!isSolvable());
         gameOver = false;
-        GameFrame.scoreCounter = 0;
-        GameFrame.score.setText("Your score: " + GameFrame.scoreCounter);
+        gameFrame.setScoreCounter(0);
+        gameFrame.setScore();
     }
 
     private void resetGame() {
@@ -174,7 +176,6 @@ public class TiliToli extends JPanel {
                 if (gameOver) {
                     break;
                 }
-
                 continue;
             }
 
@@ -207,8 +208,8 @@ public class TiliToli extends JPanel {
         }
 
         FileWriter fw = new FileWriter("score.txt");
-        for(int i = 0; i < array.length; ++i) {
-            fw.write(String.valueOf(array[i]) + "\n");
+        for (int j : array) {
+            fw.write(j + "\n");
         }
         fw.close();
     }
@@ -217,7 +218,7 @@ public class TiliToli extends JPanel {
         Scanner fs = new Scanner(f);
         int i = 0;
         while(fs.hasNextLine() && i < array.length) {
-            array[i] = Integer.valueOf(fs.nextLine());
+            array[i] = Integer.parseInt(fs.nextLine());
             ++i;
         }
         fs.close();
@@ -238,7 +239,6 @@ public class TiliToli extends JPanel {
             }
         }
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {

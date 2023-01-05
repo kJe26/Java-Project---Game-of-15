@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TIliToli:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TIliToli_jar</output-path>
+    <root id="archive" name="TIliToli.jar">
+      <element id="module-output" name="TIliToli" />
+    </root>
+  </artifact>
+</component>
