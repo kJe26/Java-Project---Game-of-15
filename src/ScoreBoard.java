@@ -60,11 +60,15 @@ public class ScoreBoard extends JFrame implements ActionListener {
             while (fs.hasNextLine()) {
                 score = fs.nextLine();
                 String tmp = places[i].getText();
-                tmp = tmp.concat(score);
+                tmp = tmp.concat(" " + score);
                 places[i].setText(tmp);
                 ++i;
             }
             fs.close();
+        } else {
+            for (int i = 0; i < places.length; ++i) {
+                places[i].setText(places[i].getText() + " 0");
+            }
         }
     }
 

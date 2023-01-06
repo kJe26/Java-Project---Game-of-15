@@ -6,13 +6,16 @@ import java.awt.event.ActionListener;
 public class GameFrame extends JFrame implements ActionListener {
     private static JPanel menuBar;       //menubar
     private final JCustomButton restartButton;      //restart button
-    private TiliToli game;                //the game itself
+    private GameModel gameModel;                //game model
+    private GameView gameView;                //game view
+    private GameController gameController;      //game controller
     private final int DIFFICULTY;
     private final int DIMENSION;    //dimension of the game panel
     private final int MARGIN;        //margin constant
     private static JLabel score;           //score will be displayed on this
     private static int scoreCounter;       //counts how many click were made until game completed
     private final Color TEXT_COLOR = new Color(148, 236, 190);
+    private JPanel gamePanel;
 
     public GameFrame(int difficulty, int dimension) {
         this.DIFFICULTY = difficulty;
@@ -65,10 +68,21 @@ public class GameFrame extends JFrame implements ActionListener {
         /** adding the game to the frame **/
         setTitle("Tili Toli");
         setResizable(false);
-        game = new TiliToli(DIFFICULTY, DIMENSION, MARGIN, this);
-        game.setBounds(0, menuBar.getHeight(), getWidth(), getHeight());
-        game.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, TEXT_COLOR));
-        add(game, BorderLayout.CENTER);
+
+        gameModel = new GameModel(DIFFICULTY, DIMENSION, MARGIN, this);
+        gameView = new GameView(gameModel);
+        gameController = new GameController(gameModel, gameView);
+        gameView.addMouseListener(gameController);
+
+        gamePanel = new JPanel();
+        gamePanel.setLayout(new BorderLayout());
+        gamePanel.add(gameView, BorderLayout.CENTER);
+
+        gamePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, TEXT_COLOR));
+        gamePanel.setBounds(0, menuBar.getHeight(), getWidth(), getHeight());
+        add(gamePanel, BorderLayout.CENTER);
+        gameController.newGame();
+
         setLocationRelativeTo(null);
         setVisible(true);
 
@@ -82,11 +96,22 @@ public class GameFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == restartButton) {
-            this.remove(game);
-            game = new TiliToli(DIFFICULTY, DIMENSION, MARGIN, this);
-            game.setBounds(0, menuBar.getHeight(), getWidth(), getHeight());
-            game.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, TEXT_COLOR));
-            add(game, BorderLayout.CENTER);
+            this.remove(gamePanel);
+
+            gameModel = new GameModel(DIFFICULTY, DIMENSION, MARGIN, this);
+            gameView = new GameView(gameModel);
+            gameController = new GameController(gameModel, gameView);
+            gameView.addMouseListener(gameController);
+
+            gamePanel = new JPanel();
+            gamePanel.setLayout(new BorderLayout());
+            gamePanel.add(gameView, BorderLayout.CENTER);
+
+            gamePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, TEXT_COLOR));
+            gamePanel.setBounds(0, menuBar.getHeight(), getWidth(), getHeight());
+            add(gamePanel, BorderLayout.CENTER);
+            gameController.newGame();
+
             scoreCounter = 0;
             score.setText("Your score: " + scoreCounter);
             SwingUtilities.updateComponentTreeUI(this);
