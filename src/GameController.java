@@ -1,3 +1,4 @@
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,6 +21,7 @@ public class GameController extends MouseAdapter{
     private int blankPos;
     private final int[] tiles;
     private final int panelSize;
+    private final Clip clip;
 
     public GameController(GameModel gameModel, GameView gameView) {
         this.gameModel = gameModel;
@@ -32,47 +34,51 @@ public class GameController extends MouseAdapter{
         this.blankPos = gameModel.getBlankPos();
         this.panelSize = gameModel.getPanelSize();
         this.tiles = gameModel.getTiles();
+
+        //audio
+        try {
+            File soundFile = new File("move.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
     }
     @Override
     public void mousePressed(MouseEvent e) {
-        if (gameOver) {
-            try {
-                saveScore(gameFrame.getScoreCounter());
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            JOptionPane.showMessageDialog(null, "Congratulations, you've completed the game");
-            newGame();
-        } else {
-            /** get the position of the clicked tile **/
-            int ex = e.getX() - margin;
-            int ey = e.getY() - margin;
+        /** get the position of the clicked tile **/
+        int ex = e.getX() - margin;
+        int ey = e.getY() - margin;
 
-            /** if clicked out of the grid **/
-            if (ex < 0 || ex > gridSize || ey < 0 || ey > gridSize)
-                return;
+        /** if clicked out of the grid **/
+        if (ex < 0 || ex > gridSize || ey < 0 || ey > gridSize)
+            return;
 
-            /** get the position in the grid **/
-            int gridColumn = ex / tileSize;
-            int gridRow = ey / tileSize;
+        /** get the position in the grid **/
+        int gridColumn = ex / tileSize;
+        int gridRow = ey / tileSize;
 
-            /** get the position of the blank tile **/
-            int blankColumn = blankPos % panelSize;
-            int blankRow = blankPos / panelSize;
+        /** get the position of the blank tile **/
+        int blankColumn = blankPos % panelSize;
+        int blankRow = blankPos / panelSize;
 
-            int clickPos = gridRow * panelSize + gridColumn;
+        int clickPos = gridRow * panelSize + gridColumn;
 
-            int dir = 0;
+        int dir = 0;
 
-            /** checking for the direction the tile could go **/
-            if (gridColumn == blankColumn && Math.abs(gridRow - blankRow) > 0 && (gridRow + 1 == blankRow || gridRow - 1 == blankRow)) {
-                dir = (gridRow - blankRow) > 0 ? panelSize : -panelSize;
-            } else if (gridRow == blankRow && Math.abs(gridColumn - blankColumn) > 0 && (gridColumn + 1 == blankColumn || gridColumn - 1 == blankColumn)) {
-                dir = (gridColumn - blankColumn) > 0 ? 1 : -1;
-            }
+        /** checking for the direction the tile could go **/
+        if (gridColumn == blankColumn && Math.abs(gridRow - blankRow) > 0 && (gridRow + 1 == blankRow || gridRow - 1 == blankRow)) {
+            dir = (gridRow - blankRow) > 0 ? panelSize : -panelSize;
+        } else if (gridRow == blankRow && Math.abs(gridColumn - blankColumn) > 0 && (gridColumn + 1 == blankColumn || gridColumn - 1 == blankColumn)) {
+            dir = (gridColumn - blankColumn) > 0 ? 1 : -1;
+        }
 
-            /** move the tile in that direction **/
-            if (dir != 0) {
+        /** move the tile in that direction **/
+        if (dir != 0) {
+            clip.setFramePosition(0);
+            clip.start();
+            if(!clip.isRunning()) {
                 do {
                     int newBlankPos = blankPos + dir;
                     tiles[blankPos] = tiles[newBlankPos];
@@ -84,10 +90,19 @@ public class GameController extends MouseAdapter{
                 gameFrame.setScoreCounter(gameFrame.getScoreCounter() + 1);
                 gameFrame.setScore();
             }
+        }
 
-            /** check if solved **/
-            gameModel.setGameOver(isSolved());
-            gameOver = isSolved();
+        /** check if solved **/
+        gameOver = isSolved();
+
+        if (gameOver) {
+            try {
+                saveScore(gameFrame.getScoreCounter());
+            } catch (IOException exp) {
+                throw new RuntimeException(exp);
+            }
+            JOptionPane.showMessageDialog(null, "Congratulations, you've completed the game");
+            newGame();
         }
 
         /** repaint the panel **/

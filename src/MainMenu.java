@@ -25,7 +25,7 @@ public class MainMenu extends JFrame implements ActionListener {
         final int MARGIN = 60;
 
         /** adding the logo to the top of the start screen **/
-        ImageIcon image = new ImageIcon("logo.png");
+        ImageIcon image = new ImageIcon("data/photo/logo.png");
         Image temp = image.getImage();
         temp = temp.getScaledInstance(getWidth() - 2 * MARGIN, getWidth() / 2 - MARGIN, Image.SCALE_SMOOTH);
         image = new ImageIcon(temp);
