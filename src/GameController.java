@@ -3,12 +3,12 @@ import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Objects;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Random;
-import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameController extends MouseAdapter{
     private final GameModel gameModel;
@@ -37,7 +37,7 @@ public class GameController extends MouseAdapter{
 
         //audio
         try {
-            File soundFile = new File("move.wav");
+            File soundFile = new File("data/audio/move.wav");
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
@@ -184,8 +184,9 @@ public class GameController extends MouseAdapter{
 
     private void saveScore(int score) throws IOException {
         int[] array = new int[5];
-        if(new File("score.txt").exists()) {
-            readIntoArray(new File("score.txt"), array);
+        File file = new File("score.txt");
+        if(file.exists()) {
+            readIntoArray(file, array);
             insertScore(array, score);
         } else {
             array[0] = score;
@@ -198,18 +199,21 @@ public class GameController extends MouseAdapter{
         fw.close();
     }
 
-    private void readIntoArray(File f, int[] array) throws FileNotFoundException {
-        Scanner fs = new Scanner(f);
-        int i = 0;
-        while(fs.hasNextLine() && i < array.length) {
-            String text = fs.nextLine();
-            if (Objects.equals(text, "")){
-                return;
+    private void readIntoArray(File f, int[] array) {
+        Path filePath = Path.of(f.getPath());
+        if(Files.exists(filePath)) {
+            AtomicInteger i = new AtomicInteger(0);
+            try {
+                Files.lines(filePath)
+                        .takeWhile(text -> !text.isEmpty() && i.get() < array.length)
+                        .forEach(text -> {
+                            array[i.get()] = Integer.parseInt(text);
+                            i.getAndIncrement();
+                        });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            array[i] = Integer.parseInt(text);
-            ++i;
         }
-        fs.close();
     }
 
     private void insertScore(int[] array, int score) {

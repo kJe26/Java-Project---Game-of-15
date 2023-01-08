@@ -4,7 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScoreBoard extends JFrame implements ActionListener {
     private final JCustomButton backButton;
@@ -53,21 +58,23 @@ public class ScoreBoard extends JFrame implements ActionListener {
             scorePanel.add(places[i]);
         }
 
-        if(new File("score.txt").exists()) {
-            Scanner fs = new Scanner(new File("score.txt"));
-            String score;
-            int i = 0;
-            while (fs.hasNextLine()) {
-                score = fs.nextLine();
-                String tmp = places[i].getText();
-                tmp = tmp.concat(" " + score);
-                places[i].setText(tmp);
-                ++i;
+        Path filePath = Paths.get("score.txt");
+        if (Files.exists(filePath)) {
+            try {
+                AtomicInteger i = new AtomicInteger(0);
+                Files.lines(filePath)
+                        .forEach(score -> {
+                            String tmp = places[i.get()].getText();
+                            tmp = tmp.concat(" " + score);
+                            places[i.get()].setText(tmp);
+                            i.getAndIncrement();
+                        });
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
-            fs.close();
         } else {
-            for (int i = 0; i < places.length; ++i) {
-                places[i].setText(places[i].getText() + " 0");
+            for (JLabel place : places) {
+                place.setText(place.getText() + " 0");
             }
         }
     }

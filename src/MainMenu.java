@@ -1,10 +1,16 @@
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class MainMenu extends JFrame implements ActionListener {
     private final JLabel imageLabel;              //label for the image
@@ -117,26 +123,21 @@ public class MainMenu extends JFrame implements ActionListener {
             helpPanel.setBackground(null);
             helpPanel.setOpaque(true);
 
-            File textFile = new File("helpText.txt");
-            Scanner textScanner;
+            Path textFilePath = Paths.get("data/helpText.txt");
             try {
-                textScanner = new Scanner(textFile);
-            } catch (FileNotFoundException ex) {
+                String fileContent = Files.lines(textFilePath)
+                        .collect(Collectors.joining("\n"));
+                helpPanel.setText("<html><div style='text-align: center;'>" + fileContent.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</div></html>");
+                helpPanel.setForeground(TEXT_COLOR);
+                helpPanel.setFont(new Font("ComicSans", Font.BOLD, 17));
+                helpPanel.setAlignmentX(0);
+                helpPanel.setAlignmentY(0);
+                contentPanel.add(helpPanel);
+
+                SwingUtilities.updateComponentTreeUI(this);
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            String fileContent = "";
-            while(textScanner.hasNextLine()) {
-                fileContent = fileContent.concat(textScanner.nextLine() + "\n");
-            }
-
-            helpPanel.setText("<html><div style='text-align: center;'>" + fileContent.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</div></html>");
-            helpPanel.setForeground(TEXT_COLOR);
-            helpPanel.setFont(new Font("ComicSans", Font.BOLD, 17));
-            helpPanel.setAlignmentX(0);
-            helpPanel.setAlignmentY(0);
-            contentPanel.add(helpPanel);
-
-            SwingUtilities.updateComponentTreeUI(this);
         } else {
             if(e.getSource() == backButton) {
                 remove(contentPanel);
@@ -148,6 +149,24 @@ public class MainMenu extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
+        // background music
+        try {
+            File soundFile = new File("data/audio/music.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+
+            /** set the volume to 70% **/
+            FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float volume = 0.7f;
+            float range = volumeControl.getMaximum() - volumeControl.getMinimum();
+            float gain = range * volume + volumeControl.getMinimum();
+            volumeControl.setValue(gain);
+
+            clip.loop(1000);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
         MainMenu newGame = new MainMenu();
         newGame.setVisible(true);
         newGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
