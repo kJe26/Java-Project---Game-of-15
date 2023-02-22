@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class MainMenu extends JFrame implements ActionListener {
@@ -163,7 +162,7 @@ public class MainMenu extends JFrame implements ActionListener {
             float gain = range * volume + volumeControl.getMinimum();
             volumeControl.setValue(gain);
 
-            clip.loop(1000);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             throw new RuntimeException(e);
         }

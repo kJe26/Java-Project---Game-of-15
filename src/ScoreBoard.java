@@ -2,13 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScoreBoard extends JFrame implements ActionListener {
@@ -74,7 +72,7 @@ public class ScoreBoard extends JFrame implements ActionListener {
             }
         } else {
             for (JLabel place : places) {
-                place.setText(place.getText() + " 0");
+                place.setText(place.getText() + " -");
             }
         }
     }
